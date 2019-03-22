@@ -1,0 +1,15 @@
+function read_reg(dev_addr,reg_addr)
+    i2c.start(id)
+    i2c.address(id,dev_addr,i2c.transmitter)
+    i2c.write(id,reg_addr)
+    i2c.stop(id)
+
+    i2c.start(id)
+    i2c.address(id,dev_addr,i2c.receiver)
+    c=i2c.read(id,1)
+    i2c.stop(id)
+    return c
+end
+
+reg=read_reg(0x77,0xAA)
+print(string.byte(reg))
