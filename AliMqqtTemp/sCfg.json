@@ -1,0 +1,11 @@
+{   "ssid":"sun",
+    "pwd":"****lower",
+    "interval":1,
+    "ProductKey":"****jzKEYWm",
+    "DeviceName":"NodeMcu2",
+    "DeviceSecret":"****o8p9cDKuUJ4r3AacB9gfmEOVf9p7",
+    "sensor":[
+    {"type":"dht22","pin":"D7","tempId":"Temperature", "humiId":"Humidity"},
+    {"type":"sht31", "sda":5,"scl":6,"tempId":"CurrentTemperature", "humiId":"CurrentHumidity"}
+    ]
+}
