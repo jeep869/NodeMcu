@@ -1,14 +1,4 @@
 require("sht30m2")
-file.open("sCfg.json") 
-jsonData= sjson.decode(file.read())
-file.close()
-interval=jsonData.interval
-sensor=jsonData.sensor
-print("interval="..interval)
-if file.open("mqttcfg.json") then
-    mqttcfg= sjson.decode(file.read())
-    file.close()
-end
 const={}
 const.D0=0
 const.D1=1
@@ -18,6 +8,13 @@ const.D4=4
 const.D5=5
 const.D6=6
 const.D7=7
+
+if file.open("mqttcfg.json") then
+    mqttcfg= sjson.decode(file.read())
+    file.close()
+end
+interval=mqttcfg.interval
+sensor=mqttcfg.sensor
 
 ClientId =wifi.sta.getmac()
 ProductKey= mqttcfg.ProductKey

@@ -1,8 +1,12 @@
 gpio.mode(4,gpio.OUTPUT)
-wifi_cfg={}
-wifi_cfg.ssid="sun"
-wifi_cfg.pwd="sunflower"
-wifi_cfg.auto=true
+
+if file.open("wificfg.json") then
+    wifi_cfg= sjson.decode(file.read())
+    file.close()
+else
+    print("Open Wificfg.json fail")
+    return
+end
 wifi.setmode(wifi.STATION) 
 wifi.sta.config(wifi_cfg)       
        
@@ -23,7 +27,6 @@ end)
 
 wifi.eventmon.register(wifi.eventmon.STA_DISCONNECTED, function(T)
     print("Wifi disconnect")
-
 end)
 
 wifi.eventmon.register(wifi.eventmon.STA_CONNECTED, function(T)
