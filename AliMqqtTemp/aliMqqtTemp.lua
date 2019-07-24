@@ -13,9 +13,8 @@ if file.open("mqttcfg.json") then
     mqttcfg= sjson.decode(file.read())
     file.close()
 end
-interval=mqttcfg.interval
-sensor=mqttcfg.sensor
 
+sensor=mqttcfg.sensor
 ClientId =wifi.sta.getmac()
 ProductKey= mqttcfg.ProductKey
 DeviceName= mqttcfg.DeviceName
@@ -47,7 +46,6 @@ myMQTTClientId=ClientId.."|securemode=3,signmethod=hmacsha1,timestamp="..myMQTTt
 myMQTT=mqtt.Client(myMQTTClientId,120,myMQTTusername,myMQTTpassword)
 
 MQTTconnectFlag=0
-
 tmr.alarm(0,2000,1,function()
     if myMQTT~=nil then
         print("Mqtt attempting client connect...")
@@ -70,7 +68,6 @@ function MQTTFailed(client,reson)
     MQTTconnectFlag=0
     tmr.start(0)
 end
-
 myMQTT:on("offline", function(client)
     print("mqtt offline")
     tmr.start(0)
@@ -102,7 +99,6 @@ function updatefunc(m,pl)
            if aliData.HumiId~=nil then 
               tData[aliData.sensorId].humiId=aliData.HumiId
            end
-
            file.open("sCfg.json", "w+")
            file.write(sjson.encode(fileData))
            file.close()
@@ -118,7 +114,6 @@ function getPostData()
         retTable["method"] = "thing.event.property.post"
         return sjson.encode(retTable)
 end
-
 function getParams(sensor)
     params={}
     for  i=1,#sensor  do
@@ -145,7 +140,7 @@ function getParams(sensor)
     end   
     return params
 end    
-tmr.alarm(1, 1000*60*interval,1, function()
+tmr.alarm(1, 1000*60*mqttcfg.interval,1, function()
     if MQTTconnectFlag==1 and myMQTT~=nil then
         myMQTT:publish(topic0,getPostData(),0,0,
             function(client)
