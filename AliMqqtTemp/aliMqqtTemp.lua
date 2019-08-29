@@ -80,18 +80,23 @@ myMQTT:on("message", function(client, topic, data)
     end
     end)
 function updatefunc(m,pl)
-    local pack = sjson.decode(pl)
-    if pack.method == "thing.service.property.set" then
-        if pack["params"]["Config"]~=nil then          
-           if file.open("mqqtcfg.json") then
-             fileData= sjson.decode(file.read())
-             sensorCfg=fileData.sensor
+    local alcfg = sjson.decode(pl)
+    if alcfg.method == "thing.service.property.set" then
+        if alcfg["params"]["Config"]~=nil then 
+           aliData=alcfg.params.Config     
+           if file.open("mqttcfg.json") then
+             mqttcfg= sjson.decode(file.read())
+             sensorCfg=mqttcfg.sensor
              file.close()
              print("config readed")
+           else
+             print("open file error")
+             node.restart()      
            end
-           aliData=pack.params.Config
            if aliData.interval~=nil then 
-              fileData.interval=aliData.interval
+              print("aliData interval:"..aliData.interval)    
+              print("mqqtcfg interval:".. mqttcfg.interval)    
+              mqttcfg.interval=aliData.interval
            end
            if aliData.tempName~=nil then 
               sensorCfg[aliData.sensorId].tempName=aliData.tempName
@@ -99,8 +104,8 @@ function updatefunc(m,pl)
            if aliData.humiName~=nil then 
               sensorCfg[aliData.sensorId].humiName=aliData.humiName
            end
-           file.open("mqqtcfg.json", "w+")
-           file.write(sjson.encode(fileData))
+           file.open("mqttcfg.json", "w+")
+           file.write(sjson.encode(mqttcfg))
            file.close()
            print("Restarting...")
            node.restart()          
