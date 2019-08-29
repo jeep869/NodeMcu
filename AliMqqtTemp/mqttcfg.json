@@ -1,8 +1,8 @@
 {
- "interval":10,
- "ProductKey":"a1YQjzKEYWm",
+ "interval":1,
+ "ProductKey":"****jzKEYWm",
  "DeviceName":"NodeMcu1",
- "DeviceSecret":"NJ6sKz7dUvHmM4rZaFiJKE6djt5PXzRH",
+ "DeviceSecret":"****Kz7dUvHmM4rZaFiJKE6djt5PXzRH",
  "sensor":[
   {"type":"dht22","pin":"D7","tempName":"Temperature", "humiName":"Humidity"},
   {"type":"sht31", "sda":5,"scl":6,"tempName":"CurrentTemperature", "humiName":"CurrentHumidity"}
