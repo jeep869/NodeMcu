@@ -1,4 +1,4 @@
-require("sht30m2")
+require("sht30v2")
 const={}
 const.D0=0
 const.D1=1
@@ -83,23 +83,23 @@ function updatefunc(m,pl)
     local pack = sjson.decode(pl)
     if pack.method == "thing.service.property.set" then
         if pack["params"]["Config"]~=nil then          
-           if file.open("sCfg.json") then
+           if file.open("mqqtcfg.json") then
              fileData= sjson.decode(file.read())
-             tData=fileData.sensor
+             sensorCfg=fileData.sensor
              file.close()
-             print("sCfg readed")
+             print("config readed")
            end
            aliData=pack.params.Config
            if aliData.interval~=nil then 
               fileData.interval=aliData.interval
            end
-           if aliData.TempId~=nil then 
-              tData[aliData.sensorId].tempId=aliData.TempId
+           if aliData.tempName~=nil then 
+              sensorCfg[aliData.sensorId].tempName=aliData.tempName
            end
-           if aliData.HumiId~=nil then 
-              tData[aliData.sensorId].humiId=aliData.HumiId
+           if aliData.humiName~=nil then 
+              sensorCfg[aliData.sensorId].humiName=aliData.humiName
            end
-           file.open("sCfg.json", "w+")
+           file.open("mqqtcfg.json", "w+")
            file.write(sjson.encode(fileData))
            file.close()
            print("Restarting...")
@@ -126,17 +126,14 @@ function getParams(sensor)
         end 
         
         if sensor[i].type=="sht31"  then 
-            sht30m2.initSHT30()
-            sht31=sht30m2.get_data() 
-            print("sht:"..sht31.temp)
-            sensorTemp=sht31.temp
-            sensorHumi=sht31.humi
-         end
+            sht30v2.init()
+            sensorTemp,sensorHumi=sht30v2.read() 
+        end
     
-         tempId=sensor[i].tempId
-         humiId=sensor[i].humiId
-         params[tempId]=sensorTemp
-         params[humiId]=sensorHumi
+        tempName=sensor[i].tempName
+        humiName=sensor[i].humiName
+        params[tempName]=sensorTemp
+        params[humiName]=sensorHumi
     end   
     return params
 end    

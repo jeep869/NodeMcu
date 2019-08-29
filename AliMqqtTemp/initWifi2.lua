@@ -31,8 +31,9 @@ end)
 
 wifi.eventmon.register(wifi.eventmon.STA_CONNECTED, function(T)
    GetNetTime()
-   print("do aliMqqtTemp")
-   dofile("aliMqqtTemp.lua")
+   fileName="aliMqqtTemp.lua"
+   print("Do file "..fileName)
+   dofile(fileName)
 end)
 
 function GetNetTime()
